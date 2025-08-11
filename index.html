@@ -113,6 +113,78 @@
             width: 100%;
         }
         
+        /* Real-time clock */
+        .datetime-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 10px 20px;
+            min-width: 180px;
+        }
+        
+        .date-display {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .time-display {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Prayer Times */
+        .prayer-times {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .prayer-time {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 70px;
+        }
+        
+        .prayer-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .prayer-hour {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+        
+        .current-prayer {
+            color: #ffcc00;
+            position: relative;
+        }
+        
+        .current-prayer::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background: #ffcc00;
+        }
+        
         /* Hero Section */
         .hero {
             height: 85vh;
@@ -457,22 +529,38 @@
         }
         
         /* Responsive */
+        @media (max-width: 1200px) {
+            header {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .datetime-container {
+                order: 3;
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+        
         @media (max-width: 992px) {
             nav ul {
-                gap: 15px;
+                gap: 10px;
             }
             
             .hero h2 {
                 font-size: 2.8rem;
             }
+            
+            .date-display {
+                font-size: 16px;
+            }
+            
+            .time-display {
+                font-size: 20px;
+            }
         }
         
         @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                gap: 20px;
-            }
-            
             nav ul {
                 flex-wrap: wrap;
                 justify-content: center;
@@ -489,6 +577,14 @@
             
             .hero p {
                 font-size: 1.2rem;
+            }
+            
+            .prayer-times {
+                justify-content: center;
+            }
+            
+            .prayer-time {
+                min-width: 60px;
             }
         }
         
@@ -508,6 +604,11 @@
             
             .link-box {
                 padding: 30px 20px;
+            }
+            
+            .link {
+                padding: 12px 25px;
+                font-size: 1.1rem;
             }
         }
     </style>
@@ -534,6 +635,15 @@
                 <li><a href="#">اتصل بنا</a></li>
             </ul>
         </nav>
+        
+        <!-- Real-time Date and Time -->
+        <div class="datetime-container">
+            <div class="date-display" id="current-date">الاثنين ١١ أغسطس ٢٠٢٥</div>
+            <div class="time-display">
+                <i class="fas fa-clock"></i>
+                <span id="current-time">٠٠:٠٠:٠٠</span>
+            </div>
+        </div>
     </header>
 
     <!-- Hero Section -->
@@ -586,6 +696,18 @@
         </div>
     </section>
 
+    <!-- Prayer Times Section -->
+    <section class="features" style="background-color: #f0f8ff;">
+        <div class="section-title">
+            <h2>أوقات الصلاة - دمشق</h2>
+            <p>أوقات الصلاة حسب التوقيت المحلي لمدينة دمشق</p>
+        </div>
+        
+        <div class="prayer-times" id="prayer-times">
+            <!-- Prayer times will be populated by JavaScript -->
+        </div>
+    </section>
+
     <!-- Gallery Section -->
     <section class="gallery">
         <div class="section-title">
@@ -615,7 +737,7 @@
                 </div>
             </div>
             <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1572252366348-d0b9f3c0a1d2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="جامع بني أمية">
+                <img src="https://images.unsplash.com/photo-1587217395390-810e0a4f6a9c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="جامع بني أمية">
                 <div class="overlay">
                     <h3>الجامع الأموي</h3>
                     <p>درة دمشق ومسجدها العريق</p>
@@ -645,10 +767,10 @@
                 <h3>نبض سوريا</h3>
                 <p>منصة ثقافية سياحية تهدف إلى التعريف بجمال وتاريخ سوريا العريقة، وربط أبناء سوريا في جميع أنحاء العالم بتراثهم وثقافتهم.</p>
                 <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="https://facebook.com/nabdsyria" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://twitter.com/nabdsyria" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://instagram.com/nabdsyria" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://youtube.com/nabdsyria" target="_blank"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
             <div class="footer-col">
@@ -675,14 +797,95 @@
                 <h3>اتصل بنا</h3>
                 <ul>
                     <li><a href="#"><i class="fas fa-map-marker-alt"></i> دمشق، سوريا</a></li>
-                    <li><a href="#"><i class="fas fa-phone"></i> +963 11 1234567</a></li>
-                    <li><a href="#"><i class="fas fa-envelope"></i> info@nabdsyria.com</a></li>
+                    <li><a href="mailto:info@nabdsyria.com"><i class="fas fa-envelope"></i> info@nabdsyria.com</a></li>
+                    <li><a href="contact.html"><i class="fas fa-comments"></i> نموذج الاتصال</a></li>
                 </ul>
             </div>
         </div>
         <div class="copyright">
-            <p>© 2023 نبض سوريا. جميع الحقوق محفوظة | صمم بكل الفخر والاعتزاز بسوريا</p>
+            <p>© <span id="current-year"></span> نبض سوريا. جميع الحقوق محفوظة | صمم بكل الفخر والاعتزاز بسوريا</p>
         </div>
     </footer>
+
+    <script>
+        // Update current date and time
+        function updateDateTime() {
+            const now = new Date();
+            
+            // Format date in Arabic
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const arabicDate = now.toLocaleDateString('ar-SY', options);
+            document.getElementById('current-date').textContent = arabicDate;
+            
+            // Format time in Arabic numerals
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('current-time').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        
+        // Initialize and update every second
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+        
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // Prayer times for Damascus (example data)
+        const prayerTimes = [
+            { name: "الفجر", time: "04:30" },
+            { name: "الشروق", time: "05:45" },
+            { name: "الظهر", time: "12:30" },
+            { name: "العصر", time: "16:15" },
+            { name: "المغرب", time: "19:20" },
+            { name: "العشاء", time: "20:45" }
+        ];
+        
+        // Function to determine current prayer
+        function getCurrentPrayer() {
+            const now = new Date();
+            const currentHours = now.getHours();
+            const currentMinutes = now.getMinutes();
+            const currentTime = currentHours * 60 + currentMinutes;
+            
+            // Convert prayer times to minutes
+            const prayerMinutes = prayerTimes.map(prayer => {
+                const [hours, minutes] = prayer.time.split(':').map(Number);
+                return hours * 60 + minutes;
+            });
+            
+            // Find the next prayer
+            for (let i = 0; i < prayerMinutes.length; i++) {
+                if (currentTime < prayerMinutes[i]) {
+                    return i > 0 ? i - 1 : prayerTimes.length - 1;
+                }
+            }
+            return prayerTimes.length - 1; // Default to last prayer
+        }
+        
+        // Display prayer times with highlighting for current prayer
+        function displayPrayerTimes() {
+            const prayerContainer = document.getElementById('prayer-times');
+            const currentPrayerIndex = getCurrentPrayer();
+            
+            prayerTimes.forEach((prayer, index) => {
+                const prayerElement = document.createElement('div');
+                prayerElement.className = 'prayer-time';
+                if (index === currentPrayerIndex) {
+                    prayerElement.classList.add('current-prayer');
+                }
+                
+                prayerElement.innerHTML = `
+                    <div class="prayer-name">${prayer.name}</div>
+                    <div class="prayer-hour">${prayer.time}</div>
+                `;
+                
+                prayerContainer.appendChild(prayerElement);
+            });
+        }
+        
+        // Initialize prayer times
+        displayPrayerTimes();
+    </script>
 </body>
 </html>
