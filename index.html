@@ -6,438 +6,655 @@
     <title>نبض سوريا - الصفحة الرسمية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #1877f2;
-            --secondary: #42b72a;
-            --dark: #1c1e21;
-            --light: #f0f2f5;
-            --gray: #e4e6eb;
-            --text: #050505;
-            --text-secondary: #65676b;
-            --white: #ffffff;
-            --prayer: #3498db;
-            --current-prayer: #2ecc71;
+            --primary: #ce1126;
+            --secondary: #ffffff;
+            --accent: #007a3d;
+            --dark: #000000;
+            --light: #f8f9fa;
+            --gray: #e0e0e0;
+            --text: #333333;
+            --text-secondary: #666666;
+            --gold: #ffd700;
+            --prayer: #1e88e5;
+            --current-prayer: #43a047;
             --temp-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Tajawal', sans-serif;
         }
         
         body {
-            background-color: var(--light);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             color: var(--text);
             direction: rtl;
-            line-height: 1.6;
+            line-height: 1.7;
+            min-height: 100vh;
+            background-attachment: fixed;
+            overflow-x: hidden;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 0 20px;
         }
         
         /* Header Styles */
         header {
-            background-color: var(--white);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            background: var(--primary);
+            box-shadow: 0 5px 20px rgba(206, 17, 38, 0.3);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
         }
         
         .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--gray);
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+            animation: pulse 3s infinite;
         }
         
         .logo img {
-            width: 40px;
-            height: 40px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid var(--secondary);
+            border: 3px solid var(--secondary);
+            box-shadow: var(--shadow);
         }
         
         .logo h1 {
-            font-size: 1.5rem;
-            color: var(--primary);
-            font-weight: 700;
+            font-size: 2rem;
+            color: var(--secondary);
+            font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
         
         .live-time {
-            background-color: var(--primary);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--gold);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.4rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .social-link {
             display: flex;
             align-items: center;
-            gap: 10px;
-            background-color: var(--primary);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 6px;
+            gap: 12px;
+            background: var(--accent);
+            color: var(--secondary);
+            padding: 12px 25px;
+            border-radius: 30px;
             text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
+            font-weight: 700;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 122, 61, 0.3);
         }
         
         .social-link:hover {
-            background-color: #166fe5;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background: #006a34;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 122, 61, 0.4);
         }
         
         .header-nav {
             display: flex;
             justify-content: center;
-            padding: 12px 0;
+            padding: 15px 0;
             flex-wrap: wrap;
         }
         
         .nav-item {
-            padding: 12px 24px;
-            font-weight: 600;
-            color: var(--text-secondary);
+            padding: 15px 30px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.9);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             border-bottom: 3px solid transparent;
+            font-size: 1.1rem;
+            position: relative;
+        }
+        
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 50%;
+            width: 0;
+            height: 3px;
+            background: var(--gold);
+            transition: var(--transition);
+        }
+        
+        .nav-item:hover::after, .nav-item.active::after {
+            width: 100%;
+            right: 0;
         }
         
         .nav-item.active, .nav-item:hover {
-            color: var(--primary);
-            border-bottom: 3px solid var(--primary);
+            color: var(--gold);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAwIiBoZWlnaHQ9IjQwMCI+PHJlY3Qgd2lkdGg9IjEwMDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjMmEyYTI5Ii8+PHRleHQgeD0iNTAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuMSI+2YfZiNi02YTYqtin2Kog2KfZhNmF2KfZhNmK2Yk8L3RleHQ+PC9zdmc+');
+            background-size: cover;
+            background-position: center;
+            color: var(--secondary);
+            text-align: center;
+            padding: 80px 20px;
+            margin-bottom: 40px;
+            border-radius: 0 0 30px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 20%, rgba(0, 0, 0, 0.8) 100%);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            font-weight: 800;
+            color: var(--gold);
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .hero-stat {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            border-radius: 15px;
+            min-width: 200px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .hero-stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+        
+        .hero-stat-label {
+            font-size: 1.1rem;
+            opacity: 0.85;
         }
         
         /* Main Content */
         .main-content {
             display: grid;
             grid-template-columns: 1fr 2fr 1fr;
-            gap: 25px;
-            margin: 25px 0;
+            gap: 30px;
+            margin: 40px 0;
         }
         
         .sidebar {
-            background-color: var(--white);
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-            padding: 25px;
+            background: var(--secondary);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            padding: 30px;
             height: fit-content;
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .sidebar:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
         }
         
         .sidebar-title {
-            font-size: 1.25rem;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid var(--gray);
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary);
             color: var(--primary);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+            font-weight: 700;
         }
         
         .prayer-times {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 20px;
         }
         
         .prayer-card {
-            background-color: var(--light);
-            padding: 15px;
-            border-radius: 10px;
+            background: var(--light);
+            padding: 20px;
+            border-radius: 15px;
             text-align: center;
-            transition: all 0.3s;
+            transition: var(--transition);
             border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .prayer-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--prayer);
+            transition: var(--transition);
         }
         
         .prayer-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .prayer-card:hover::before {
+            height: 100%;
+            opacity: 0.1;
         }
         
         .prayer-name {
             font-weight: 700;
             color: var(--text);
-            margin-bottom: 8px;
-            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 2;
         }
         
         .prayer-time {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             font-weight: 800;
             color: var(--prayer);
+            position: relative;
+            z-index: 2;
         }
         
         .current-prayer {
-            background-color: #e7f3ff;
+            background: rgba(30, 136, 229, 0.1);
             border: 2px solid var(--current-prayer);
-            position: relative;
         }
         
         .current-prayer::after {
             content: "الآن";
             position: absolute;
-            top: -10px;
-            right: 10px;
-            background-color: var(--current-prayer);
-            color: white;
-            padding: 3px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            top: -12px;
+            right: 15px;
+            background: var(--current-prayer);
+            color: var(--secondary);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            z-index: 3;
+            box-shadow: 0 4px 10px rgba(67, 160, 71, 0.3);
         }
         
         .weather-widget {
-            margin-top: 30px;
+            margin-top: 35px;
         }
         
         .location-selector {
             width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid var(--gray);
-            margin-bottom: 18px;
-            background-color: var(--light);
-            font-weight: 600;
-            font-size: 1rem;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid var(--gray);
+            margin-bottom: 20px;
+            background: var(--light);
+            font-weight: 700;
+            font-size: 1.1rem;
             cursor: pointer;
+            transition: var(--transition);
+            outline: none;
+        }
+        
+        .location-selector:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(206, 17, 38, 0.2);
         }
         
         .weather-card {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
             background: var(--temp-gradient);
-            color: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            color: var(--secondary);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .weather-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+            transform: rotate(30deg);
         }
         
         .temperature {
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-weight: 800;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
         }
         
         .weather-desc {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            margin: 5px 0;
+            margin: 10px 0;
+            position: relative;
+            z-index: 2;
         }
         
         .weather-info {
             display: flex;
-            gap: 25px;
-            margin-top: 15px;
+            gap: 30px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 2;
         }
         
         .weather-info-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
-            font-size: 1.1rem;
+            gap: 8px;
+            font-size: 1.2rem;
         }
         
         .weather-icon {
-            font-size: 1.5rem;
+            font-size: 2rem;
         }
         
         .feed {
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 30px;
         }
         
         .post {
-            background-color: var(--white);
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-            padding: 20px;
-            transition: transform 0.3s;
+            background: var(--secondary);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            padding: 25px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .post::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--primary);
+            transition: var(--transition);
         }
         
         .post:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .post:hover::before {
+            width: 100%;
+            opacity: 0.1;
         }
         
         .post-header {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 18px;
+            gap: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
         }
         
         .post-avatar {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid var(--primary);
+            border: 3px solid var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         .post-info h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
         }
         
         .post-info span {
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: var(--text-secondary);
         }
         
         .post-content {
-            margin-bottom: 20px;
-            line-height: 1.7;
-            font-size: 1.05rem;
+            margin-bottom: 25px;
+            font-size: 1.15rem;
+            position: relative;
+            z-index: 2;
         }
         
         .post-image {
             width: 100%;
-            border-radius: 10px;
-            margin-bottom: 18px;
-            max-height: 400px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            max-height: 450px;
             object-fit: cover;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 2;
         }
         
         .post-stats {
             display: flex;
             justify-content: space-between;
             color: var(--text-secondary);
-            font-size: 0.95rem;
-            padding: 12px 0;
+            font-size: 1.05rem;
+            padding: 15px 0;
             border-bottom: 1px solid var(--gray);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
         }
         
         .post-actions {
             display: flex;
             justify-content: space-around;
+            position: relative;
+            z-index: 2;
         }
         
         .post-action {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            border-radius: 8px;
+            gap: 10px;
+            padding: 12px 25px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             color: var(--text-secondary);
-            font-weight: 600;
-            font-size: 1.05rem;
+            font-weight: 700;
+            font-size: 1.1rem;
         }
         
         .post-action:hover {
-            background-color: var(--light);
+            background: rgba(206, 17, 38, 0.1);
             color: var(--primary);
+            transform: translateY(-3px);
         }
         
         .map-container {
-            height: 400px;
-            border-radius: 12px;
+            height: 500px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             margin-top: 20px;
             position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
         
         .map-overlay {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-weight: 700;
+            bottom: 25px;
+            right: 25px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-weight: 800;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .map-overlay i {
             color: var(--primary);
-            margin-left: 5px;
         }
         
         .map-title {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 700;
+            top: 25px;
+            left: 25px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-weight: 800;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            font-size: 1.2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
         
         .map-title i {
             color: var(--primary);
-            margin-right: 8px;
         }
         
         .stats-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 25px;
+            gap: 20px;
+            margin-top: 30px;
         }
         
         .stat-card {
-            background-color: var(--white);
-            border-radius: 10px;
-            padding: 20px;
+            background: var(--light);
+            border-radius: 15px;
+            padding: 25px;
             text-align: center;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent);
         }
         
         .stat-value {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 800;
             color: var(--primary);
-            margin: 10px 0;
+            margin: 15px 0;
         }
         
         .stat-label {
-            color: var(--text-secondary);
-            font-weight: 600;
+            color: var(--text);
+            font-weight: 700;
+            font-size: 1.1rem;
         }
         
         /* Footer */
         footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 40px 0 20px;
-            margin-top: 40px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            color: var(--secondary);
+            padding: 60px 0 30px;
+            margin-top: 60px;
+            position: relative;
         }
         
         .footer-content {
@@ -445,94 +662,64 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 30px;
+            position: relative;
+            z-index: 2;
         }
         
         .footer-logo {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
         }
         
         .footer-logo h2 {
-            font-size: 1.6rem;
+            font-size: 2rem;
             font-weight: 800;
-            color: var(--white);
+            color: var(--secondary);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
         
         .footer-links {
             display: flex;
-            gap: 25px;
+            gap: 30px;
             flex-wrap: wrap;
         }
         
         .footer-link {
-            color: #b0b3b8;
+            color: rgba(255, 255, 255, 0.85);
             text-decoration: none;
-            transition: all 0.3s;
-            font-size: 1.05rem;
+            transition: var(--transition);
+            font-size: 1.1rem;
+            font-weight: 600;
         }
         
         .footer-link:hover {
-            color: var(--white);
+            color: var(--gold);
             text-decoration: underline;
         }
         
         .copyright {
             text-align: center;
-            margin-top: 30px;
-            padding-top: 25px;
-            border-top: 1px solid #3a3b3c;
-            color: #b0b3b8;
-            font-size: 0.95rem;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            position: relative;
+            z-index: 2;
         }
         
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .main-content {
-                grid-template-columns: 1fr 2fr;
-            }
-            
-            .sidebar:last-child {
-                grid-column: span 2;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .header-top {
-                flex-direction: column;
-                gap: 15px;
-                padding: 15px 0;
-            }
-            
-            .nav-item {
-                padding: 10px 15px;
-                font-size: 0.95rem;
-            }
-            
-            .stats-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .stats-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav-item {
-                padding: 8px 12px;
-                font-size: 0.9rem;
-            }
-            
-            .post-action {
-                padding: 8px 12px;
-                font-size: 0.95rem;
-            }
+        .footer-pattern {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background: 
+                radial-gradient(circle at 20% 30%, var(--gold) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, var(--gold) 0%, transparent 20%);
         }
         
         /* Animations */
@@ -542,8 +729,102 @@
             100% { transform: scale(1); }
         }
         
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
         .pulse {
-            animation: pulse 2s infinite;
+            animation: pulse 3s infinite;
+        }
+        
+        .float {
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr 2fr;
+            }
+            
+            .sidebar:last-child {
+                grid-column: span 2;
+            }
+            
+            .hero h2 {
+                font-size: 3rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .header-top {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px 0;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hero-stat {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-item {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .prayer-times {
+                grid-template-columns: 1fr;
+            }
+            
+            .post-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .post-action {
+                justify-content: center;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .map-title, .map-overlay {
+                font-size: 1rem;
+                padding: 10px 15px;
+            }
         }
     </style>
 </head>
@@ -553,7 +834,7 @@
         <div class="container">
             <div class="header-top">
                 <div class="logo">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiMxODc3ZjIiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0id2hpdGUiLz48cGF0aCBkPSJNNTAgMjVDNDAgMjUgMzAgMzAgMzAgNDBDMzAgNTAgNDAgNjAgNTAgNjVDNjAgNjAgNzAgNTAgNzAgNDBDNzAgMzAgNjAgMjUgNTAgMjVaIiBmaWxsPSIjMTg3N2YyIi8+PHBhdGggZD0iTTQ1IDUwTDU1IDUwTDUwIDQ1TDQ1IDUwWiIgZmlsbD0id2hpdGUiLz48cGF0aCBkPSJNNDUgNTBMNTAgNTVMNTUgNTBMNTAgNDVMNDUgNTBaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==" alt="نبض سوريا">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBhdGggZmlsbD0iI0ZGRiIgZD0iTTUwLDEwMEMyMi40LDEwMCwwLDc3LjYsMCw1MEMwLDIyLjQsMjIuNCwwLDUwLDBjMjcuNiwwLDUwLDIyLjQsNTAsNTBDMTAwLDc3LjYsNzcuNiwxMDAsNTAsMTAweiIvPjxwYXRoIGZpbGw9IiNFRTFFMDAiIGQ9Ik0yOS4xLDM1LjJsMTIuOSw4LjRsMTIuOS04LjRMMzUuMSwyMi44TDI5LjEsMzUuMnoiLz48cGF0aCBmaWxsPSIjRjVCMDAwIiBkPSJNMjkuMSw2NC44bDEyLjktOC40bDEyLjksOC40TDQyLDUyLjJMMjkuMSw2NC44eiIvPjxwYXRoIGZpbGw9IiNCMTQxMTciIGQ9Ik0zNS4xLDc3LjJMMjkuMSw2NC44bDEyLjktOC40bDEyLjksOC40TDQyLDUyLjJMMzUuMSw3Ny4yeiIvPjxwYXRoIGZpbGw9IiM3NEMxMDAiIGQ9Ik02NC45LDM1LjJMNzAuOSwyMi44TDU3LjEsMzUuMmw2LDEyLjRMNjQuOSwzNS4yeiIvPjxwYXRoIGZpbGw9IiNGRjY2MDAiIGQ9Ik01Ny4xLDY0LjhsLTYtMTIuNGw2LTEyLjRsNi4xLDEyLjRMNTcuMSw2NC44eiIvPjxwYXRoIGZpbGw9IiNGRkY0Q0EiIGQ9Ik0zNS4xLDIyLjhsMTQuOSw4LjV2MTYuOEgzNS4xVjIyLjh6Ii8+PHBhdGggZmlsbD0iI0ZGQ0MxQyIgZD0iTTUwLDMxLjNsMTQuOS04LjV2MjUuM0g1MFYzMS4zeiIvPjwvc3ZnPg==" alt="نبض سوريا">
                     <h1>نبض سوريا</h1>
                 </div>
                 <div class="live-time" id="live-time">
@@ -574,11 +855,36 @@
         </div>
     </header>
 
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>نبض سوريا - قلب الشام النابض</h2>
+                <p>نافذتكم الأولى على آخر الأخبار والمناسبات والفعاليات في سوريا الحبيبة</p>
+                
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">18.3M</div>
+                        <div class="hero-stat-label">السكان</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">14</div>
+                        <div class="hero-stat-label">المحافظات</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">5000+</div>
+                        <div class="hero-stat-label">سنة حضارة</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Main Content -->
     <div class="container">
         <div class="main-content">
             <!-- Left Sidebar - Prayer Times -->
-            <div class="sidebar">
+            <div class="sidebar float">
                 <h2 class="sidebar-title"><i class="fas fa-mosque"></i> أوقات الصلاة</h2>
                 <div class="prayer-times">
                     <div class="prayer-card">
@@ -638,7 +944,7 @@
             <div class="feed">
                 <div class="post">
                     <div class="post-header">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+PGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjUiIGZpbGw9IiMxODc3ZjIiLz48dGV4dCB4PSIyNSIgeT0iMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiPuKIkDwvdGV4dD48L3N2Zz4=" alt="Profile" class="post-avatar">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+PGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjUiIGZpbGw9IiNlZTEwMDAiLz48cGF0aCBkPSJNMzcuNSwyNS4zYzAtNi45LTUuNi0xMi41LTEyLjUtMTIuUzEyLjUsMTguNCwxMi41LDI1LjNjMCw2LjksNS42LDEyLjUsMTIuNSwxMi41UzM3LjUsMzIuMiwzNy41LDI1LjN6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTI0LjgsMTcuNGMtNC4zLDAtNy44LDMuNS03LjgsNy44YzAsNC4zLDMuNSw3LjgsNy44LDcuOGM0LjMsMCw3LjgtMy41LDcuOC03LjhDMzIuNiwyMC45LDI5LjEsMTcuNCwyNC44LDE3LjR6IiBmaWxsPSIjZWUxMDAwIi8+PHBhdGggZD0iTTMwLjMsMjcuOGMtMS4zLDEuMy0zLjQsMS4zLTQuNywwYy0xLjMtMS4zLTEuMy0zLjQsMC00LjdjMS4zLTEuMywzLjQtMS4zLDQuNywwQzMxLjYsMjQuNCwzMS42LDI2LjUsMzAuMywyNy44eiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==" alt="Profile" class="post-avatar">
                         <div class="post-info">
                             <h3>نبض سوريا</h3>
                             <span>منذ 3 ساعات</span>
@@ -646,9 +952,9 @@
                     </div>
                     <div class="post-content">
                         <p>🌹 أهلاً بكم في الصفحة الرسمية لـ "نبض سوريا" على فيسبوك! هنا ننقل لكم نبض الشارع السوري وأخباره، ونرصد لكم تطورات الأحداث لحظة بلحظة.</p>
-                        <p>تابعونا ليصلكم كل جديد عن سوريا وأخبارها، وشاركونا آراءكم وتعليقاتكم.</p>
+                        <p>تابعونا ليصلكم كل جديد عن سوريا وأخبارها، وشاركونا آراءكم وتعليقاتكم. سوريا أمنا، وسنبقى نبضها النابض!</p>
                     </div>
-                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iMjgwIiB2aWV3Qm94PSIwIDAgNTAwIDI4MCI+PHJlY3Qgd2lkdGg9IjUwMCIgaGVpZ2h0PSIyODAiIGZpbGw9IiMxODc3ZjIiIG9wYWNpdHk9IjAuOCIvPjx0ZXh0IHg9IjI1MCIgeT0iMTQwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMzAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIj7Yp9mE2YLYp9mE2YrZiiDYp9mE2YHYrNmK2YLYp9mE2YLYs9iqPC90ZXh0Pjwvc3ZnPg==" alt="نبض سوريا" class="post-image">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iMjgwIiB2aWV3Qm94PSIwIDAgNTAwIDI4MCI+PHJlY3Qgd2lkdGg9IjUwMCIgaGVpZ2h0PSIyODAiIGZpbGw9IiNlZTEwMDAiIG9wYWNpdHk9IjAuOCIvPjx0ZXh0IHg9IjI1MCIgeT0iMTQwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIj7Yp9mE2YLYp9mE2YrZiiDYp9mE2YHYrNmK2YLYp9mE2YLYs9iqPC90ZXh0Pjwvc3ZnPg==" alt="نبض سوريا" class="post-image">
                     <div class="post-stats">
                         <div><i class="far fa-thumbs-up"></i> 2.4 ألف</div>
                         <div>342 تعليقًا • 98 مشاركة</div>
@@ -668,17 +974,17 @@
                 
                 <div class="post">
                     <div class="post-header">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+PGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjUiIGZpbGw9IiM0MmI3MmEiLz48dGV4dCB4PSIyNSIgeT0iMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiPtin2YTZgdin2YTZitmKPC90ZXh0Pjwvc3ZnPg==" alt="Profile" class="post-avatar">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+PGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjUiIGZpbGw9IiMwMDdhM2QiLz48cGF0aCBkPSJNMjUsMTBjLTguMywwLTE1LDYuNy0xNSwxNXM2LjcsMTUsMTUsMTVzMTUtNi43LDE1LTE1UzMzLjMsMTAsMjUsMTB6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTM1LDI1YzAsNS41LTQuNSwxMC0xMCwxMGMtNS41LDAtMTAtNC41LTEwLTEwYzAtNS41LDQuNS0xMCwxMC0xMEMzMC41LDE1LDM1LDE5LjUsMzUsMjV6IiBmaWxsPSIjMDA3YTNkIi8+PHBhdGggZD0iTTMwLDMwYy0yLjgsMi44LTcuMywyLjgtMTAuMSwwYy0yLjgtMi44LTIuOC03LjMsMC0xMC4xYzIuOC0yLjgsNy4zLTIuOCwxMC4xLDBDMzIuOCwyMi43LDMyLjgsMjcuMiwzMCwzMHoiIGZpbGw9IiNmZmYiLz48L3N2Zz4=" alt="Profile" class="post-avatar">
                         <div class="post-info">
                             <h3>وزارة السياحة السورية</h3>
                             <span>منذ يوم واحد</span>
                         </div>
                     </div>
                     <div class="post-content">
-                        <p>🏛️ قلعة حلب تفتح أبوابها للزوار بعد أعمال الترميم. تجدون في الصور التالية بعض المشاهد الرائعة لهذا الصرح التاريخي العظيم.</p>
-                        <p>#سوريا #السياحة_السورية #قلعة_حلب</p>
+                        <p>🏛️ قلعة حلب تفتح أبوابها للزوار بعد أعمال الترميم. تجدون في الصور التالية بعض المشاهد الرائعة لهذا الصرح التاريخي العظيم الذي يمثل تحفة معمارية من العصور الوسطى.</p>
+                        <p>#سوريا #السياحة_السورية #قلعة_حلب #تراث_عالمي</p>
                     </div>
-                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iMjgwIiB2aWV3Qm94PSIwIDAgNTAwIDI4MCI+PHJlY3Qgd2lkdGg9IjUwMCIgaGVpZ2h0PSIyODAiIGZpbGw9IiM0MmI3MmEiIG9wYWNpdHk9IjAuOCIvPjx0ZXh0IHg9IjI1MCIgeT0iMTQwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMzAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIj7Zh9mI2LHZgtiq2Ykg2KfZhNmF2KfZhNmK2Yk8L3RleHQ+PC9zdmc+" alt="قلعة حلب" class="post-image">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iMjgwIiB2aWV3Qm94PSIwIDAgNTAwIDI4MCI+PHJlY3Qgd2lkdGg9IjUwMCIgaGVpZ2h0PSIyODAiIGZpbGw9IiMwMDdhM2QiIG9wYWNpdHk9IjAuOCIvPjx0ZXh0IHg9IjI1MCIgeT0iMTQwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIj7Zh9mI2LHZgtiq2Ykg2KfZhNmF2KfZhNmK2Yk8L3RleHQ+PC9zdmc+" alt="قلعة حلب" class="post-image">
                     <div class="post-stats">
                         <div><i class="far fa-thumbs-up"></i> 3.1 ألف</div>
                         <div>487 تعليقًا • 210 مشاركة</div>
@@ -698,7 +1004,7 @@
             </div>
 
             <!-- Right Sidebar - Map & Stats -->
-            <div class="sidebar">
+            <div class="sidebar float">
                 <h2 class="sidebar-title"><i class="fas fa-map-marked-alt"></i> خريطة سوريا</h2>
                 <div class="map-container" id="map">
                     <div class="map-title"><i class="fas fa-syria"></i> الجمهورية العربية السورية</div>
@@ -729,10 +1035,11 @@
 
     <!-- Footer -->
     <footer>
+        <div class="footer-pattern"></div>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCI+PGNpcmNsZSBjeD0iMTUiIGN5PSIxNSIgcj0iMTUiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMTUgNUMxMCA1IDUgMTAgNSAxNUM1IDIwIDEwIDI1IDE1IDI1QzIwIDI1IDI1IDIwIDI1IDE1QzI1IDEwIDIwIDUgMTUgNVoiIGZpbGw9IiMxODc3ZjIiLz48cGF0aCBkPSJNMTAgMTVMMTUgMTBMMjAgMTVMMTUgMjBMMTAgMTVaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==" alt="Logo">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMjAsNUMxMCw1LDUsMTAsNSwyMHM1LDE1LDE1LDE1czE1LTUsMTUtMTVTMzAsNSwyMCw1eiIgZmlsbD0iI2VlMTAwMCIvPjxwYXRoIGQ9Ik0xNSwxMGMwLTIsMi00LDQtNHM0LDIsNCw0cy0yLDQtNCw0UzE1LDEyLDE1LDEweiIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0yMCwzMGMtNS41LDAtMTAtNC41LTEwLTEwczQuNS0xMCwxMC0xMHMxMCw0LjUsMTAsMTBTMjUuNSwzMCwyMCwzMHoiIGZpbGw9IiMwMDdhM2QiLz48L3N2Zz4=" alt="Logo">
                     <h2>نبض سوريا</h2>
                 </div>
                 <div class="footer-links">
@@ -744,7 +1051,7 @@
                 </div>
             </div>
             <div class="copyright">
-                © 2023 نبض سوريا. جميع الحقوق محفوظة.
+                © 2023 نبض سوريا. جميع الحقوق محفوظة. | صمم بكل فخر واعتزاز في سوريا الحبيبة
             </div>
         </div>
     </footer>
@@ -766,29 +1073,43 @@
         updateTime();
         
         // Initialize map
-        const map = L.map('map').setView([34.8021, 38.9968], 7);
+        const map = L.map('map').setView([35.0, 38.5], 7);
         
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
         
         // Add marker for Damascus
-        L.marker([33.5138, 36.2765]).addTo(map)
-            .bindPopup('دمشق<br>عاصمة سوريا')
+        const damascusIcon = L.icon({
+            iconUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCI+PGNpcmNsZSBjeD0iMTUiIGN5PSIxNSIgcj0iMTIiIGZpbGw9IiNlZTEwMDAiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHRleHQgeD0iMTUiIHk9IjE4IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmYiPtin2YTYsTwvdGV4dD48L3N2Zz4=',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15],
+            popupAnchor: [0, -15]
+        });
+        
+        L.marker([33.5138, 36.2765], {icon: damascusIcon}).addTo(map)
+            .bindPopup('<b>دمشق</b><br>عاصمة سوريا وأقدم عاصمة مأهولة في العالم')
             .openPopup();
             
         // Add markers for other major cities
         const cities = [
-            {name: "حلب", coords: [36.2021, 37.1343]},
-            {name: "حمص", coords: [34.7324, 36.7132]},
-            {name: "اللاذقية", coords: [35.5177, 35.7831]},
-            {name: "درعا", coords: [32.6257, 36.1061]},
-            {name: "الحسكة", coords: [36.5070, 40.7420]}
+            {name: "حلب", coords: [36.2021, 37.1343], color: "#007a3d"},
+            {name: "حمص", coords: [34.7324, 36.7132], color: "#1e88e5"},
+            {name: "اللاذقية", coords: [35.5177, 35.7831], color: "#ff6f00"},
+            {name: "درعا", coords: [32.6257, 36.1061], color: "#5e35b1"},
+            {name: "الحسكة", coords: [36.5070, 40.7420], color: "#43a047"}
         ];
         
         cities.forEach(city => {
-            L.marker(city.coords).addTo(map)
-                .bindPopup(city.name);
+            const icon = L.icon({
+                iconUrl: `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iOCIgZmlsbD0i${city.color.replace('#', '')}iIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjEiLz48L3N2Zz4=`,
+                iconSize: [24, 24],
+                iconAnchor: [12, 12],
+                popupAnchor: [0, -12]
+            });
+            
+            L.marker(city.coords, {icon: icon}).addTo(map)
+                .bindPopup(`<b>${city.name}</b>`);
         });
         
         // Add Syria outline
@@ -799,8 +1120,7 @@
             [34.82, 35.70],
             [35.91, 38.63],
             [37.32, 42.37]
-        ]).addTo(map)
-        .setStyle({color: "#1877f2", weight: 3, fillOpacity: 0.1});
+        ], {color: "#ce1126", weight: 3, fillOpacity: 0.1}).addTo(map);
         
         // Weather data
         const weatherData = {
@@ -866,6 +1186,11 @@
         // Initial update
         updatePrayerTimes();
         setInterval(updatePrayerTimes, 60000);
+        
+        // Add floating effect to sidebar elements
+        document.querySelectorAll('.sidebar').forEach((sidebar, index) => {
+            sidebar.style.animationDelay = `${index * 0.2}s`;
+        });
     </script>
 </body>
 </html>
